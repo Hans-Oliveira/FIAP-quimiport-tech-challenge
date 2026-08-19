@@ -127,7 +127,7 @@ Para garantir que a complexidade do ecossistema portuário seja bem traduzida pa
 
 * **Responsabilidade:** Registrar o histórico de avaliações da equipe de qualidade.
 
-* **Atributos:** `id`, `dataInspecao`, `resultado`, `observacoes`, `registroProfissional`.
+* **Atributos:** `id`, `dataInspecao`, `resultado`, `observacoes`, `registroProfissional`, `parecerTecnico`, `statusInspecao`.
 
 
 **6. Remetente (Empresa Cliente)**
