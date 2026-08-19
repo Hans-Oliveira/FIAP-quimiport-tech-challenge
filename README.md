@@ -1,132 +1,356 @@
-# FIAP-quimiport-tech-challenge
+# FIAP QuimiPort - Tech Challenge (Fase 1)
+
+  
 
 ## 1. Entendimento do Domínio
 
-### Contexto de Problema
-O Porto de Santos é um dos principais pontos de movimentação do Brasil, lidando com produtos químicos que exigem controle cuidadoso, acompanhamento técnico, documentação adequada e classificação de risco. Atualmente, o registro em empresas de controle é feito de forma manual ou descentralizada. Isso dificulta a consulta das informações, o rastreio do status da carga e a validação de regras de segurança essenciais. 
+**Contexto de Problema:** O Porto de Santos é um dos principais pontos de movimentação do Brasil, lidando com produtos químicos que exigem controle cuidadoso, acompanhamento técnico, documentação adequada e classificação de risco. Atualmente, o registro em empresas de controle é feito de forma manual ou descentralizada. Isso dificulta a consulta das informações, o rastreio do status da carga e a validação de regras de segurança essenciais.
 
-### Resolução de problema
-O **QuimiPort** surge para solucionar esse cenário, oferecendo um sistema centralizado para a gestão inicial dessas cargas, bloqueando ou liberando as operações de acordo com as regras de negócio.
+  
 
-### Usuários Envolvidos
-O ecossistema engloba os seguintes atores:
+**Resolução de problema:** O **QuimiPort** surge para solucionar esse cenário, oferecendo um sistema centralizado para a gestão inicial dessas cargas, bloqueando ou liberando as operações de acordo com as regras de negócio.
+
+  
+
+**Usuários Envolvidos:** O ecossistema engloba os seguintes atores:
+
 * **Operador portuário:** Atua no registro e na linha de frente da movimentação.
+
 * **Responsável técnico:** Profissional que atesta as cargas.
+
 * **Analista de documentação:** Encarregado de inserir e validar os documentos.
+
 * **Analista de qualidade:** Responsável por avaliações e inspeções na carga.
+
 * **Gestor operacional:** Supervisiona as cargas e o fluxo portuário.
+
 * **Administrador do sistema:** Gerencia os cadastros primários de produtos, usuários e verifica possíveis erros.
 
-### Informações Controladas
-Para que o controle seja efetivo, o sistema precisa gerenciar:
+  
+
+**Informações Controladas:** Para que o controle seja efetivo, o sistema precisa gerenciar:
+
 * Cadastro de produtos e suas respectivas classes de risco.
+
 * Cadastro de documentação de produtos se obrigatório.
+
 * Documentação obrigatória vinculada a cada carga.
+
 * Dados do responsável técnico pela carga.
+
 * Status de andamento e histórico da carga.
-* Cadastro das necessidades da carga (refrigera, frágil, etc...).
 
+* Cadastro das necessidades da carga (refrigerada, frágil, etc.).
 
-### Processos da Operação e Decisões
-O fluxo operacional envolve cadastrar os produtos químicos de referência, registrar a entrada das cargas físicas, associá-las aos responsáveis, anexar a documentação (caso obrigatório) e se necessário solicitar inspeções. O sistema atua como o tomador de decisão primário para **liberar ou bloquear** a movimentação de uma carga, validando de forma automatizada se todos os requisitos de segurança e documentais foram cumpridos para seguir até a etapa final.
+  
 
-### Riscos e Restrições
-Para mitigar os altos riscos de segurança de produtos químicos o domínio impõe restrições severas:
-* Um produto químico não pode ser cadastrado sem classe de risco. Nenhuma carga pode ser registrada sem estar associada a um produto válido e sem um responsável técnico definido.
-* A quantidade da carga deve ser sempre maior que zero.
-* Uma carga não pode ser liberada para movimentação portuária se estiver com pendências de documentação obrigatória ou se estiver com inspeção em andamento.
-* Cargas com status bloqueado ou cancelado não entram em movimentação sob nenhuma hipótese.
+**Processos da Operação e Decisões:** O fluxo operacional envolve cadastrar os produtos químicos de referência, registrar a entrada das cargas físicas, associá-las aos responsáveis, anexar a documentação (caso obrigatório) e se necessário solicitar inspeções. O sistema atua como o tomador de decisão primário para **liberar ou bloquear** a movimentação de uma carga, validando de forma automatizada se todos os requisitos de segurança e documentais foram cumpridos para seguir até a etapa final.
 
+  
+
+---
+
+  
 ## 2. Modelagem com Domain Driven Design (DDD)
 
 Para garantir que a complexidade do ecossistema portuário seja bem traduzida para o código, utilizamos os conceitos de DDD. Esta abordagem permite que as regras de negócio fiquem isoladas e protegidas no núcleo da aplicação.
 
 ### Linguagem Ubíqua
-Vocabulário compartilhado entre os desenvolvedores e os especialistas de domínio:
+
 * **Produto Químico:** O material de referência cadastrado no sistema (o catálogo). Representa as especificações do produto, e não o contêiner físico.
-- **Carga Química:** Lote físico e fechado do produto químico que chega ao porto e precisa ser movimentado.
-- **Responsável Técnico:** Profissional legalmente capacitado que atesta a conformidade de uma carga.
-- **Documentação:** Conjunto de registros e licenças exigidos para atestar a legalidade e a segurança da carga.
-- **Carga Retida:** Status temporário indicando que a carga está aguardando alguma aprovação, seja de teste de qualidade ou liberação de documentação.
-- **Inspeção:** Processo de avaliação física ou documental realizado pela equipe de qualidade (analistas).
-- **Status da Carga:** O estado atual da carga dentro do fluxo portuário (ex: Registrada, Em Inspeção, Bloqueada, Liberada, Cancelada).
-- **Risco da Carga:** Classificação de risco que compõe o material (ex: Explosivos, Gases, Líquidos Inflamáveis, Sólidos Inflamáveis).
-- **Necessidade da Carga:** Necessidade especial para transporte e armazenamento (ex: Nenhuma, Refrigeração Contínua, Isolamento Térmico, Armazenamento Estritamente Seco, Acolchoamento/Anti-vibração).
-- **Remetente:** Cliente (empresa) de origem que está enviando a carga química para o porto.
+
+* **Carga Química:** Lote físico e fechado do produto químico que chega ao porto e precisa ser movimentado.
+
+* **Responsável Técnico:** Profissional legalmente capacitado que atesta a conformidade de uma carga.
+
+* **Documentação:** Conjunto de registros e licenças exigidos para atestar a legalidade e a segurança da carga.
+
+* **Carga Retida:** Status temporário indicando que a carga está aguardando alguma aprovação, seja de teste de qualidade ou liberação de documentação.
+
+* **Inspeção:** Processo de avaliação física ou documental realizado pela equipe de qualidade (analistas).
+
+* **Status da Carga:** O estado atual da carga dentro do fluxo portuário (ex: CADASTRADA, EM_INSPECAO, BLOQUEADA, LIBERADA, CANCELADA).
+
+* **Risco da Carga:** Classificação de risco que compõe o material (ex: Explosivos, Gases, Líquidos Inflamáveis, Sólidos Inflamáveis).
+
+* **Necessidade da Carga:** Necessidade especial para transporte e armazenamento (ex: Nenhuma, Refrigeração Contínua, Isolamento Térmico, Armazenamento Estritamente Seco, Acolchoamento/Anti-vibração).
+
+* **Remetente:** Cliente (empresa) de origem que está enviando a carga química para o porto.
+
 
 ### Objetos de Valor
-Elementos imutáveis que representam características ou medidas sem identidade própria. Eles agrupam atributos relacionados e encapsulam suas próprias regras de validação para garantir que dados inválidos nunca cheguem às Entidades:
 
-- **QuantidadeMedida:** Representa o volume ou peso físico da carga.
-    - _Regra:_ É composto por um `valor` (que deve ser estritamente maior que zero) e uma `unidade` (ex: Litros, Toneladas, KG). Não permite a criação de medidas negativas.
-    
-- **ClassificacaoRisco:** Representa a categoria de perigo do material de acordo com padrões internacionais.
-    - _Regra:_ Deve ser um valor estrito e válido dentro de uma lista padronizada (Enum), como _Líquido Inflamável_ ou _Gás Tóxico_.
-    
-- **NecessidadeCarga:** Representa as condições rigorosas de transporte e armazenamento exigidas (ex: Refrigeração Contínua, Isolamento Seco, Aterramento Elétrico...).
-    
-- **CNPJ:** Representa a identificação fiscal de um Remetente.
-    - _Regra:_ Não é apenas uma _string_; o objeto valida matematicamente se os dígitos verificadores estão corretos e aplica a formatação padrão (`XX.XXX.XXX/XXXX-XX`).
-    
-- **Endereco:** Agrupa os dados de localização física do remetente (Logradouro, Número, Cidade, Estado, CEP) em um único bloco conceitual.
-    - _Regra:_ Garante que um endereço não seja criado faltando informações cruciais, como o CEP ou o Estado.
-    
-- **Telefone:** Representa o contato do remetente.
-    - _Regra:_ Valida se o número possui o formato correto e o código de área (DDD).
+* **QuantidadeMedida:** Representa o volume ou peso físico da carga. *Regra:* É composto por um `valor` (estritamente maior que zero) e uma `unidade`. Não permite a criação de medidas negativas.
+
+* **ClassificacaoRisco:** Representa a categoria de perigo do material. *Regra:* Deve ser um valor estrito e válido dentro de uma lista padronizada (Enum).
+
+* **NecessidadeCarga:** Representa as condições rigorosas de transporte (ex: Refrigeração Contínua).
+
+* **CNPJ:** Representa a identificação fiscal de um Remetente. *Regra:* Valida matematicamente os dígitos verificadores e aplica a formatação padrão.
+
+* **Endereco:** Agrupa os dados de localização física do remetente (Logradouro, Número, Cidade, Estado, CEP).
+
+* **Telefone:** Representa o contato do remetente, validando código de área e formato.
+
 
 ### Entidades
-Objetos que possuem identidade única (ID) e cujo ciclo de vida é rastreado pelo sistema.
 
 **1. Produto Químico**
-- **Responsabilidade:** Representar o catálogo base de materiais, guardando suas propriedades químicas e de segurança definitivas.
-- **Atributos:** `id`, `nome`, `classeRisco`, `status`, `descricao`, `pesoUnidade`.
-- **Regras:** Não pode ser cadastrado sem nome ou sem classe de risco. Um produto inativo não pode ser associado a novas cargas registradas.
-- **Relacionamentos:** Utilizado como referência principal (catálogo) pela entidade Carga Química.
+
+* **Responsabilidade:** Representar o catálogo base de materiais, guardando suas propriedades químicas e de segurança.
+
+* **Atributos:** `id`, `nome`, `classeRisco`, `status`, `descricao`, `pesoUnidade`.
+
 
 **2. Carga Química**
-- **Responsabilidade:** Rastrear o lote físico do material que chega ao porto, gerenciar a transição de seus status e proteger as regras de movimentação portuária.
-- **Atributos:** `id`, `idProduto`, `quantidade`, `necessidadeCarga`, `statusAtual`, `observacoes`, `idResponsavelTecnico`, `idRemetente`, `destino`, `listaDocumentos`, `historicoInspecoes`.
-* **Regras:** 
-	- Não pode ser registrada sem um produto químico associado.
-	- Não pode ser registrada se o produto químico associado estiver inativo.
-	- A quantidade informada deve ser maior que zero.
-	- Toda carga deve possuir um responsável técnico informado.
-	- Uma carga não pode ser liberada sem a documentação obrigatória.
-	- Uma carga bloqueada ou cancelada não pode entrar em movimentação.
-- **Relacionamentos:** Faz referência direta ao `Produto Químico`, ao `Responsável Técnico` e ao `Remetente`. Atua como raiz do agregado (Aggregate Root) sendo a "dona" das entidades de `Documento da Carga` e `Inspeção`.
+
+* **Responsabilidade:** Rastrear o lote físico do material que chega ao porto, gerenciar a transição de seus status e proteger as regras de movimentação.
+
+* **Atributos:** `id`, `idProduto`, `quantidade`, `necessidadeCarga`, `statusAtual`, `observacoes`, `registroProfissional`, `idRemetente`, `destino`, `listaDocumentos`, `historicoInspecoes`, `dataEntrada`, `dataSaida`.
+  
 
 **3. Responsável Técnico**
+
 * **Responsabilidade:** Identificar o profissional que responde legalmente pelo status da carga.
-* **Atributos:** `id`, `nome`, `tipoTecnico`.
-* **Relacionamentos:** Vinculado a uma ou mais Cargas Química.
+
+* **Atributos:** `id`, `nome`, `registroProfissional`, `cpf`.
+
 
 **4. Documento da Carga**
+
 * **Responsabilidade:** Comprovar o pertencimento legal e de segurança.
-* **Atributos:** `id`, `tipoDocumento`, `dataEmissao`, `statusAprovacao`.
-* **Relacionamentos:** Pertence exclusivamente a uma Carga Química.
+
+* **Atributos:** `id`, `tipoDocumento`, `dataEmissao`, `statusValido`, `dataValidade`.
+
 
 **5. Inspeção**
+
 * **Responsabilidade:** Registrar o histórico de avaliações da equipe de qualidade.
-* **Atributos:** `id`, `dataInspecao`, `resultado`, `observacoes`, `idResponsavelTecnico`.
-* **Relacionamentos:** Pertence a uma Carga Química.
+
+* **Atributos:** `id`, `dataInspecao`, `resultado`, `observacoes`, `registroProfissional`.
+
 
 **6. Remetente (Empresa Cliente)**
-- **Responsabilidade:** Representar a empresa de origem que está enviando a carga química para o porto.
-- **Atributos:** `id`, `razaoSocial`, `cnpj`, `endereco`, `responsavel`, `telefone`.
-- **Regras:** O CNPJ deve ser válido. Um remetente não pode ser excluído do sistema se possuir cargas ativas ou em movimentação no porto.
-- **Relacionamentos:** Uma Carga Química é originada por um Remetente.
 
-### Agregados
-**Agregado Principal: Carga Química**
-- **Responsabilidade:** Atuar como a _Root Entity_ (Raiz do Agregado) e estabelecer a fronteira de consistência transacional do sistema. A Carga Química é a "maestrina" que orquestra todo o ciclo de vida do lote no porto, garantindo que o sistema nunca entre em um estado operacional inválido.
-- **Composição do Agregado:** A raiz `Carga Química` engloba suas próprias propriedades e objetos de valor (`quantidade`, `necessidadeCarga`, `statusAtual`), referências externas (`idProduto`, `idResponsavelTecnico`, `idRemetente`) e atua como "dona" das coleções internas de entidades dependentes (`listaDocumentos` e `historicoInspecoes`).
+* **Responsabilidade:** Representar a empresa de origem que está enviando a carga química.
 
-**Por que este agregado foi escolhido e quais regras ele protege?** A Carga Química foi escolhida como agregado principal porque entidades como _Documento da Carga_ e _Inspeção_ não possuem significado ou ciclo de vida independente no ecossistema logístico; elas existem única e exclusivamente em função de uma carga.
+* **Atributos:** `id`, `razaoSocial`, `cnpj`, `endereco`, `responsavel`, `telefone`.
 
-Ao centralizar as operações na raiz do agregado, a Carga Química protege as seguintes regras de negócio vitais:
 
-1. **Dependência Estrutural:** Impede a criação de uma carga órfã, exigindo que ela nasça vinculada a um Produto Químico válido (e ativo), a um Remetente e a um Responsável Técnico.
-2. **Validação Documental:** Atua como um escudo antes da liberação. O agregado impede a transição de status para "Liberada" se a sua `listaDocumentos` não contiver toda a documentação obrigatória aprovada.
-3. **Trava de Segurança:** Trava qualquer movimentação ou transição de status caso o `historicoInspecoes` possua alguma inspeção com status pendente de finalização.
-4. **Máquina de Estados Unidirecional:** Orquestra o fluxo de status de forma rígida, garantindo que uma carga classificada como "Bloqueada" ou "Cancelada" jamais volte a fluir indevidamente pelo processo de movimentação portuária.
+### Agregado Principal: Carga Química
 
+* **Responsabilidade:** Atuar como a *Root Entity* e estabelecer a fronteira de consistência transacional do sistema. A Carga Química orquestra todo o ciclo de vida do lote no porto, garantindo que o sistema nunca entre em um estado inválido.
+
+* **Composição:** A raiz engloba propriedades (`quantidade`, `necessidadeCarga`, `statusAtual`), referências externas (`idProduto`, `registroProfissional`, `idRemetente`) e é "dona" das coleções internas (`listaDocumentos`, `historicoInspecoes`).
+
+* **Regras Protegidas:** Impede criação de carga órfã; trava liberação sem documentos validados; trava movimentação com inspeção pendente; e orquestra a máquina de estados unidirecional.
+
+  
+
+---
+  
+
+## 3. Casos de Uso
+
+* **CU01: Cadastrar Produto Químico:** Registra novo produto. Retorna `idProduto` ativo. Erro se faltar nome ou classe de risco (400).
+
+* **CU02: Inativar Produto Químico:** Altera status para `ativo = false`, impedindo o uso em novas cargas.
+
+* **CU03: Registrar Carga Química:** Recebe carga física. Gera `idCarga` com status `CADASTRADA`. Valida se o produto está ativo e se quantidade > 0.
+
+* **CU04: Validar Documentação da Carga:** Anexa licenças obrigatórias validadas. A data de validade deve ser maior que a data atual.
+
+* **CU05: Solicitar Inspeção:** Altera status para `EM_INSPECAO`. Apenas para cargas `CADASTRADAS`.
+
+* **CU06: Liberar Carga Química:** Altera status para `LIBERADA`. Exige documentação aprovada e inspeções finalizadas.
+
+* **CU07: Bloquear Carga Química:** Altera status para `BLOQUEADA`, interrompendo qualquer operação com a carga por irregularidades.
+
+* **CU08: Atualizar Status da Carga:** Registra progresso (ex: `EM_MOVIMENTACAO` ou `CONCLUIDA`). Uma carga bloqueada não transita.
+
+* **CU09: Cancelar Carga Química:** Status vai para `CANCELADA`. Cargas já concluídas não podem ser canceladas.
+
+* **CU10: Consultar Cargas:** Lista e filtra cargas armazenadas com paginação.
+
+* **CU11: Consultar Histórico da Carga:** Rastreabilidade em modo leitura (auditoria).
+
+
+---
+
+
+## 4. Regras de Negócio
+
+As regras de domínio críticas que guiam o sistema QuimiPort:
+
+* R1: Nenhuma carga pode ser registrada sem produto químico associado ou com produto inativo.
+
+* R2: Um produto químico não pode ser cadastrado sem classe de risco.
+
+* R3: A quantidade da carga deve ser obrigatoriamente maior que zero.
+
+* R4: Toda carga deve possuir um responsável técnico informado.
+
+* R5: Uma carga não pode ser movimentada sem a documentação obrigatória validada ou se possuir inspeção pendente.
+
+* R6: Cargas com status `BLOQUEADA` ou `CANCELADA` não podem entrar em movimentação sob nenhuma hipótese.
+
+- R7: usuários só podem liberar carga se tiverem perfil autorizado
+
+- R8: credenciais inválidas devem bloquear login
+
+- R9: perfil de operação e inspeção deve respeitar regras de acesso por função
+
+---
+
+
+## 5. Arquitetura Proposta
+
+Para o projeto QuimiPort, a arquitetura escolhida é a **Onion Architecture (Arquitetura em Cebola)**. Esta decisão garante uma forte separação de responsabilidades e permite que o sistema evolua de forma segura:
+
+* **Domínio (Core):** Onde residem as regras de negócio puras (Entidades, Agregados, Enums). Não possui dependência externa.
+
+* **Aplicação (Use Cases):** Orquestra o fluxo (ex: RegistrarCarga). Consome o domínio e define contratos.
+
+* **Interface (Entrada):** Recebe requisições (API/Web), valida formatos e repassa para os Casos de Uso.
+
+* **Infraestrutura:** Lida com o banco de dados e integrações externas implementando as interfaces da aplicação.
+
+  
+
+---
+
+  
+
+## 6. Falta finalizar
+
+## 7. Diagrama
+
+## 8. 
+
+## 9. Tecnologias e Conceitos
+
+
+O sistema será construído utilizando **TypeScript** para garantir segurança tipada, previsibilidade e escalabilidade do código. Os conceitos de JavaScript Avançado serão aplicados da seguinte maneira para suportar a modelagem do Domínio:
+
+
+*   **Classes e Orientação a Objetos:** Utilizadas para modelar o domínio central. Entidades como `CargaQuimica` esconderão seus atributos (encapsulamento privado) e exporão apenas métodos que protegem as regras de negócio (ex: o método `liberarCarga()` valida o estado antes de atualizá-lo).
+
+*   **Interfaces (Contratos):** Serão fundamentais para aplicar a Inversão de Dependência. Criaremos interfaces como `ICargaRepository` na camada de Domínio, ditando o que o sistema precisa, enquanto a Infraestrutura se encarrega de implementar como isso será feito no banco de dados.
+
+*   **Enums:** Aplicados para categorizar dados absolutos do contexto portuário, como status das cargas e classificações de risco de produtos químicos, evitando o uso de strings soltas e propensas a erros.
+
+*   **Funções Puras:** Usadas intensamente nas validações internas (ex: validar se a quantidade da carga é maior que zero). Elas garantem que, para uma mesma entrada, a saída seja sempre idêntica, sem efeitos colaterais.
+
+*   **Generics:** Empregados para evitar repetição de código, principalmente em retornos padronizados da API e na criação de repositórios base (ex: `IRepository<T>`).
+
+*   **Módulos ES6+ e Async/Await:** A organização dos arquivos usará a sintaxe moderna de `import`/`export`. O `async/await` será o padrão nos contratos de repositórios e serviços, preparando as fundações para operações de rede e leituras de banco de dados que ocorrerão de forma assíncrona nas próximas fases.
+
+*   **Tratamento de Erros:** Criaremos classes de erro customizadas estendendo a classe nativa `Error` (ex: `BusinessRuleError`). Isso garantirá respostas claras e padronizadas sempre que uma regra (como tentar movimentar carga bloqueada) for infringida.
+
+### Exemplo Conceitual da Modelagem:
+  
+
+```typescript
+
+// Enums protegendo valores padronizados
+
+export enum StatusCarga {
+
+  PENDENTE = 'PENDENTE',
+
+  BLOQUEADA = 'BLOQUEADA',
+
+  LIBERADA = 'LIBERADA',
+
+}
+
+  
+
+// Interface (Contrato genérico)
+
+export interface ICargaRepository<T> {
+
+  salvar(entidade: T): Promise<void>;
+
+}
+
+  
+
+// Classe de Domínio
+
+export class CargaQuimica {
+
+  private status: StatusCarga;
+
+  
+
+  constructor(
+
+    private id: string,
+
+    private produtoId: string,
+
+    private quantidade: number
+
+  ) {
+
+    this.validarQuantidade(quantidade); // Executa validação via função pura
+
+    this.status = StatusCarga.PENDENTE;
+
+  }
+
+  
+
+  private validarQuantidade(qtd: number): void {
+
+    if (qtd <= 0) {
+
+      throw new Error('A quantidade deve ser maior que zero.'); // Tratamento de erro de domínio
+
+    }
+
+  }
+
+  
+
+  public liberarCarga(temDocumentacao: boolean): void {
+
+    if (!temDocumentacao) {
+
+      throw new Error('Carga não pode ser liberada sem documentação.'); // Regra de negócio
+
+    }
+
+    this.status = StatusCarga.LIBERADA;
+
+  }
+
+}
+
+```
+
+# 10. Fluxo de status da carga química
+
+    A[PENDENTE] --> B[REGISTRAR CARGA]
+    
+    B --> C[EM INSPEÇÃO]
+    
+    C --> D[LIBERADA]
+    
+    C --> E[BLOQUEADA]
+    
+    A --> E
+    
+    A --> F[CANCELADA]
+    
+    D --> G[FINALIZADA]
+## Regras
+
+- Pendente pode seguir para inspeção, bloqueio ou cancelamento.
+
+- Em inspeção precisa de documentação válida e aprovação.
+
+- Liberada é a etapa final de operação segura.
+
+- Bloqueada impede que a carga seja movimentada.
