@@ -236,7 +236,7 @@ Para o projeto QuimiPort, a arquitetura escolhida é a **Onion Architecture (Arq
 
 ## 7. Diagrama
 
-<img width="1600" height="968" alt="image" src="https://github.com/user-attachments/assets/9497d989-27e9-4f60-9da4-f53fda8cc9e7" />
+<img width="1600" height="968" alt="image" src="./Diagrama.jpg" />
 
 Link: "https://excalidraw.com/#json=Nn0gwi01JNOsn51lIkOx7,lmL7vKmiYS7rRguU0dWULw"
 
