@@ -221,11 +221,133 @@ Para o projeto QuimiPort, a arquitetura escolhida é a **Onion Architecture (Arq
 
   
 
-## 6. Falta finalizar
+## 6. Organização do projeto 
+
+| ARQUIVO                               |
+| :------------------------------------ |
+| `src`                                 |
+| `src/domain`                          |
+| `src/service`                         |
+| `src/test/unit`                       |
+| `src/repository`                      |
+
+
+
 
 ## 7. Diagrama
 
-## 8. 
+<img width="1600" height="968" alt="image" src="https://github.com/user-attachments/assets/9497d989-27e9-4f60-9da4-f53fda8cc9e7" />
+
+Link: "https://excalidraw.com/#json=Nn0gwi01JNOsn51lIkOx7,lmL7vKmiYS7rRguU0dWULw"
+
+
+
+
+## 8. Planejamento de qualidade de software
+
+
+O plano de qualidade do projeto **QuimiPort** tem como objetivo garantir que todas as regras de negócio, casos de uso e fluxos críticos do domínio sejam validados de forma consistente, segura e alinhada ao contexto portuário descrito no desafio. A seguir, apresentamos o conjunto completo de diretrizes que orientarão os testes nas próximas fases do desenvolvimento.
+
+---
+
+## Regras de negócio que precisam ser testadas
+
+As regras de negócio são o núcleo do domínio e representam restrições essenciais para segurança, conformidade e operação. Entre as regras que devem obrigatoriamente ser testadas estão:
+
+* Produto químico deve possuir **nome** e **classe de risco**.
+* Produto químico **inativo** não pode ser utilizado em novas cargas.
+* Carga química deve ter produto associado, ativo e com classificação de risco.
+* Quantidade da carga deve ser **maior que zero**.
+* Responsável técnico deve possuir **nome, CPF e registro profissional válidos**.
+* Toda carga deve possuir responsável técnico informado.
+* Carga química só pode ser liberada com a **documentação obrigatória validada**.
+* Carga bloqueada não pode entrar em movimentação.
+* Uma carga química **cancelada não pode ser liberada**.
+* Carga em inspeção não pode ser finalizada sem liberação.
+* Todas as **transições de status** devem ser validadas.
+
+---
+
+## Casos de uso mais críticos
+
+Os casos de uso críticos são aqueles que envolvem maior risco operacional ou impacto direto na segurança da carga. Entre eles:
+
+* **Cadastrar produto químico**
+* **Registrar carga química**
+* **Validar documentação**
+* **Liberar carga química**
+* **Atualizar status da carga**
+
+Esses casos exigem testes mais completos, cobrindo cenários positivos e negativos.
+
+---
+
+## Tipos de teste que serão utilizados
+
+Para garantir cobertura adequada, o projeto utilizará diferentes tipos de testes:
+
+* **Testes unitários:** regras de negócio, funções puras, entidades e agregados.
+* **Testes de integração:** casos de uso completos, interação entre camadas e persistência.
+* **Testes de validação de dados:** campos obrigatórios, formatos e consistência.
+* **Testes de comportamento:** regras proibitivas e cenários de exceção.
+* **Testes com mocks e dados simulados:** substituição de dependências externas.
+* **Testes de ciclo de vida da carga:** transições de status válidas e inválidas.
+* **Testes de fluxo (E2E conceitual):** simulação de operações reais do domínio.
+
+---
+
+## Como o grupo pretende aplicar testes unitários
+
+Os testes unitários serão aplicados diretamente sobre:
+
+* Regras de negócio isoladas
+* Funções puras de validação
+* Casos de uso com dependências mockadas
+* Cenários negativos e exceções
+* Entidades e agregados
+* Enums e objetos de valor
+
+O foco é garantir que cada regra funcione corretamente sem infraestrutura externa.
+
+---
+
+## Como o grupo pretende aplicar testes de integração futuramente
+
+Quando o backend estiver implementado, os testes de integração vão validar:
+
+* Interação entre camadas da arquitetura
+* Persistência real usando banco em memória ou containers
+* Casos de uso completos com dados reais
+* Regras que dependem de múltiplos componentes
+* Fluxos completos do domínio *(registro → documentação → inspeção → liberação)*
+* Cenários de erro com dados persistidos
+
+---
+
+## Como o grupo pretende validar fluxos principais
+
+Os fluxos principais serão validados através de testes de integração e E2E conceitual, cobrindo:
+
+* Fluxo completo de **liberação da carga**
+* Fluxo de **bloqueio e impedimento de movimentação**
+* Fluxo de **cancelamento**
+* Fluxo de **inspeção**
+* Fluxo de **transição de status**
+* Fluxo de **documentação obrigatória:** anexar → validar → liberar
+
+Cada fluxo será testado em cenários positivos e negativos, garantindo que o sistema respeite todas as regras do domínio.
+
+---
+
+## Como o grupo pretende organizar mocks e dados simulados
+
+Para permitir testes sem backend, o grupo utilizará:
+
+* Repositórios simulados em memória
+* Mocks organizados por contexto (produto, carga, documentação, responsável técnico)
+* Dados simulados representando situações reais do porto
+* Simulação de erros e exceções
+* Builders para criação de cenários complexos
 
 ## 9. Tecnologias e Conceitos
 
