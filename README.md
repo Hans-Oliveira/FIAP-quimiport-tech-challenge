@@ -454,19 +454,16 @@ export class CargaQuimica {
 
 # 10. Fluxo de status da carga química
 
-    A[PENDENTE] --> B[REGISTRAR CARGA]
-    
-    B --> C[EM INSPEÇÃO]
-    
-    C --> D[LIBERADA]
-    
-    C --> E[BLOQUEADA]
-    
-    A --> E
-    
-    A --> F[CANCELADA]
-    
-    D --> G[FINALIZADA]
+```mermaid
+flowchart TD
+    A[PENDENTE] --> B[REGISTRAR CARGA]
+    B --> C[EM INSPEÇÃO]
+    C --> D[LIBERADA]
+    C --> E[BLOQUEADA]
+    A --> F[CANCELADA]
+    D --> G[FINALIZADA]
+
+```
 ## Regras
 
 - Pendente pode seguir para inspeção, bloqueio ou cancelamento.
