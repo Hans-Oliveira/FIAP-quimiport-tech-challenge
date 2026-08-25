@@ -200,6 +200,8 @@ As regras de domínio críticas que guiam o sistema QuimiPort:
 
 - R9: perfil de operação e inspeção deve respeitar regras de acesso por função
 
+- R10: Volume e peso de produto não pode exceder a limite de carga.
+
 ---
 
 
@@ -228,8 +230,9 @@ Para o projeto QuimiPort, a arquitetura escolhida é a **Onion Architecture (Arq
 | `src`                                 |
 | `src/domain`                          |
 | `src/service`                         |
-| `src/test/unit`                       |
 | `src/repository`                      |
+| `src/test/unit`                       |
+
 
 
 
